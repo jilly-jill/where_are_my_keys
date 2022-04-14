@@ -1,7 +1,6 @@
 
 import random
-import kiddo
-import gameplay
+
 
 rooms = {
     'Foyer': {
@@ -54,31 +53,17 @@ rooms = {
     "Bathroom": {
         'south': "Kid's Bedroom",
         'east': 'Living Room',
-        'item': '1 Blippi Sock'
-    },
+        'item': '1 Blippi Sock'},
     "Living Room": {
-        'west': 'Bathroom',
+        "west": 'Bathroom',
         'south': 'Hall',
-        'item': 'House Keys'
-    }
+        'item': 'House'}
 }
 
-def child_check():
-    child_in_room = random.choice([True, False])
-    if child_in_room == True:
-        if gameplay.location == 'Bathroom':
-            print(f'"{gameplay.pname}, I made Moana swim in the toilet, but shes stuck! Why is there so much water?"\n' +
-                      'The toilet is thoroughly backed up and water is flooding across the bathroom floor, lose 5 sanity\n')
-            sanity = gameplay.sanity
-            sanity -= 5
-            return sanity
-        if gameplay.location == 'Living Room':
-            print(f"'{gameplay.pname}, I got out ALL THE LEGOS!\n{gameplay.pname} DON'T STEP ON MY TOWN!'\n" +
-                      'You step on multiple lego blocks, eviscerating the sole of your foot, lose 5 sanity\n')
-            sanity = gameplay.sanity
-            sanity -= 5
-            return sanity
-        else:
-            #kiddo.scenario()
-            kiddo.ask_question()
+
+
+# if rooms.__contains__('Bathroom') or rooms.__contains__('Living Room'):
+#     bathroom = rooms['Bathroom']
+#     livingroom = rooms['Living Room']
+
 

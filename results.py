@@ -1,7 +1,5 @@
+
 import gameplay
-
-
-
 
 # def check_cond():
 #     if main.inventory
