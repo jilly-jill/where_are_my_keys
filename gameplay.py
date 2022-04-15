@@ -31,33 +31,29 @@ def player_status(inventory, sanity, location):
     # sanity_check(sanity)
     item_list = room.rooms[location].get('item')
     if item_list == "":
-        item_list = "Wow, nothing"
+        item_list = "A rare clutterless room"
     else:
         item_list = item_list
     # print players current statistics
     print(
-        f"\n**===**===****===**Current Status**===****===**===**\n" +
+        f"**===**===****===**Current Status**===****===**===**\n" +
         f"Location: {location}\n" +
         f"Sanity: {sanity}\n" +
         f"What's In Your Inventory?: {inventory}\n"
         f"Whats in the room?: {item_list}\n" +
-        '   **===**===**===**===**===**===**===**===**===**===**'
+        '**===**===**===**===**===**===**===**===**===**===**'
     )
 
 
 def main():
-    print(directions.show_instructions)
+    directions.start()
     name = input("'What's your preferred name?':\n>")
     pname = input("What name does the kiddo call you by?\n>")
-    inventory = []
-    sanity = 20
-    usr = Player(name, pname, inventory, sanity)
+    usr = Player(name, pname, [], 20)
     current_room = 'Foyer'
-    print(directions.show_instructions)
     print(
-        "**===**===**===**===**===**===**===**===**===**===**\n" +
-        f'Welcome to your parenting experience {usr.name}\n\n'
-    )
+        "\n**===**===**===**===**===**===**===**===**===**===**\n" +
+        f'\nWelcome to your parenting experience {usr.name}\n')
     counter = 0
     while True:
         player_status(usr.inventory, usr.sanity, current_room)
@@ -68,11 +64,12 @@ def main():
         if move[0] == 'go':
             if move[1] in room.rooms[current_room]:
                 current_room = room.rooms[current_room][move[1]]
-                check = barrage_of_questions.check_child(current_room, usr.sanity, usr.pname)
+                check = barrage_of_questions.check_child()
                 if check is True:
+                    usr.sanity = barrage_of_questions.penalty(current_room, usr.sanity)
                     usr.sanity = barrage_of_questions.q_and_a(current_room, usr.sanity, usr.pname)
             else:
-                verification.inaccessible()
+                verification.inaccessible(usr.name)
 
         if move[0] == 'get':
             if "item" in room.rooms[current_room] and move[1] in room.rooms[current_room]['item']:
@@ -84,7 +81,7 @@ def main():
                 del room.rooms[current_room]['item']
                 # otherwise, if the item isn't there to get
             else:
-                verification.not_there()
+                verification.not_there(usr.name)
 
         counter += 1
         print(counter)

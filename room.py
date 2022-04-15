@@ -1,6 +1,4 @@
 
-import random
-
 
 rooms = {
     'Foyer': {
@@ -61,5 +59,3 @@ rooms = {
         'item': 'House',
     }
 }
-
-
