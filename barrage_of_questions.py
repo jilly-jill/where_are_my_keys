@@ -12,6 +12,7 @@ def check_child():
 
 
 def penalty(location, sanity):
+    input("QUICK! You've been spotted by a feral toddler! Press ENTER to continue\n>")
     if location == 'Bathroom' or location == 'Living Room':
         if location == 'Bathroom':
             print(
@@ -23,7 +24,7 @@ def penalty(location, sanity):
                 "'I got out ALL THE LEGOS!\nDON'T STEP ON MY TOWN!'\n" +
                 'You step on multiple lego blocks, eviscerating the sole of your foot')
         sanity -= 5
-        print("LOSE 5 SANITY POINTS!\nCurrent Sanity: " + sanity)
+        print("LOSE 5 SANITY POINTS!\nCurrent Sanity: " + str(sanity))
     return sanity
 
 
@@ -31,7 +32,6 @@ def q_and_a(location, sanity, pname):
     print(location)
     question = random.choice(questions)
     number = random.randrange(1, 10)
-    input("QUICK! You've been spotted by a feral toddler! Press any key to continue\n>")
     answer = input(
         f"Tell me! {question}, {pname}!\nYour child is awaiting a response\n" +
         "What is your response?:\n> "

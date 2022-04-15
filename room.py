@@ -5,57 +5,54 @@ rooms = {
         'east': 'Dining Room',
         'north': 'Hall',
         'south': 'Outside',
-        'item': '1 Blippi Sock',
+        'item': 'blippi sock',
     },
     'Dining Room': {
         'north': 'Kitchen',
         'west': 'Foyer',
-        'item': 'Wallet',
+        'item': 'wallet',
     },
     'Kitchen': {
         'south': 'Dining Room',
         'west': 'Hall',
-        'item': 'Travel Mug of Cold Coffee',
+        'item': 'travel mug of cold coffee',
     },
     'Outside': {
         'north': 'Foyer',
         'east': 'Car',
-        'item': '1 TRex Sock',
+        'item': 'trex sock',
     },
     'Car': {
         'west': 'Outside',
-        'item': '1 Blippi Sock',
+        'item': 'blippi sock',
     },
     'Hall': {
         'north': 'Living Room',
         'west': 'Bedroom',
         'east': 'Kitchen',
         'south': 'Foyer',
-        'item': '3 Capri Sun Straw Wrappers',
+        'item': '3 capri straw wrappers',
     },
     'Bedroom': {
         'north': "Kid's Bedroom",
         'east': "Hall",
-        'items': 'Dusty Sleep Mask',
+        'items': 'dusty sleep mask',
     },
     "Kid's Bedroom": {
         'north': 'Bathroom',
         'south': 'Bedroom',
-        'east': 'Toy Chest',
-        'item': 'Petrified PopTart',
-    },
-    "Toy Chest": {
-        'west': "Kid's Bedroom",
-        'item': 'Car Keys'
+        'item': {
+            'toy chest': 'car keys'
+        }
     },
     "Bathroom": {
         'south': "Kid's Bedroom",
         'east': 'Living Room',
-        'item': '1 Blippi Sock'},
+        'item': 'blippi sock'},
 
     "Living Room": {
         "west": 'Bathroom',
         'south': 'Hall',
-        'item': 'House',
+        'item': 'a minefield of legos'
     }
 }
