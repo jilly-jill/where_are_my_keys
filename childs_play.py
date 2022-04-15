@@ -29,7 +29,6 @@ def penalty(location, sanity):
 
 
 def q_and_a(location, sanity, pname):
-    print(location)
     question = random.choice(questions)
     number = random.randrange(1, 10)
     answer = input(
