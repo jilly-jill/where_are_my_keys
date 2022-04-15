@@ -1,42 +1,16 @@
-from os import name
-
 import barrage_of_questions
 import directions
 import results
 import room
-import random
 import verification
 
 
-def ask_question(location, sanity, pname):
-    if check_child() == location:
-        if location == 'Bathroom':
-            print(
-                """'I made Moana swim in the toilet, but shes stuck! Why is there so much water?'\n" + 
-                        "The toilet is thoroughly backed up and water is flooding across the bathroom floor, lose 5 sanity" 
-                        """
-            )
-        elif location == 'Living Room':
-            print(
-                "'I got out ALL THE LEGOS!\nDON'T STEP ON MY TOWN!'\n"
-                'You step on multiple lego blocks, eviscerating the sole of your foot, lose 5 sanity\n'
-            )
-        sanity -= 5
-        rand_q = barrage_of_questions.question
-        rand_a = barrage_of_questions.answer
-        query = input(
-            f"{pname},{pname},{pname}!\n{rand_q}\nTell me! {pname}!\n" +
-            "Your child is awaiting a response\nPlease press: 1 OR 2\n> "
-        )
-        print(f'You respond: {rand_a}\n')
-        if query == 1:
-            print(
-                f"\nGood job {pname}!\n"
-                f"The child returns to the household wilderness\n"
-            )
-        else:
-            sanity += 3
-            print(f"{pname.upper()} NO! NO! NO! NO! NO! NO! WRONG! WRONG! WRONG!")
+class Player:
+    def __init__(self, name, pname, inventory, sanity):
+        self.name = name,
+        self.pname = pname,
+        self.inventory = inventory,
+        self.sanity = sanity
 
 
 def sanity_check(sanity):
@@ -55,7 +29,7 @@ def sanity_check(sanity):
 
 def player_status(inventory, sanity, location):
     # sanity_check(sanity)
-    item_list = room.rooms [location].get('item')
+    item_list = room.rooms[location].get('item')
     if item_list == "":
         item_list = "Wow, nothing"
     else:
@@ -71,64 +45,49 @@ def player_status(inventory, sanity, location):
     )
 
 
-class Player:
-    def __init__(self, name, pname, inventory, sanity):
-        self.name = name,
-        self.pname = pname,
-        self.inventory = inventory,
-        self.sanity = sanity
-
-
-def check_child(currentRoom):
-    poss_room = random.choice('T' 'F')
-    print(poss_room + currentRoom)
-    if poss_room == currentRoom:
-        return True
-    else:
-        return False
-
 def main():
     print(directions.show_instructions)
     name = input("'What's your preferred name?':\n>")
     pname = input("What name does the kiddo call you by?\n>")
-    usr = Player(name, pname, [], 20)
-    print(type(usr.sanity))
-    currentRoom = 'Foyer'
+    inventory = []
+    sanity = 20
+    usr = Player(name, pname, inventory, sanity)
+    current_room = 'Foyer'
     print(directions.show_instructions)
     print(
         "**===**===**===**===**===**===**===**===**===**===**\n" +
         f'Welcome to your parenting experience {usr.name}\n\n'
     )
-
+    counter = 0
     while True:
-        player_status(usr.inventory, usr.sanity, currentRoom)
+        player_status(usr.inventory, usr.sanity, current_room)
         move = ''
         while move == '':
             move = input('>')
         move = move.lower().split(" ", 1)
         if move[0] == 'go':
-            if move[1] in room.rooms[currentRoom]:
-                currentRoom = room.rooms[currentRoom][move[1]]
-                if check_child(currentRoom) == True:
-                    ask_question(currentRoom, usr.sanity, usr.pname)
+            if move[1] in room.rooms[current_room]:
+                current_room = room.rooms[current_room][move[1]]
+                check = barrage_of_questions.check_child(current_room, usr.sanity, usr.pname)
+                if check is True:
+                    usr.sanity = barrage_of_questions.q_and_a(current_room, usr.sanity, usr.pname)
             else:
                 verification.inaccessible()
 
         if move[0] == 'get':
-            if "item" in room.rooms[currentRoom] and move [1] in room.rooms[currentRoom]['item']:
+            if "item" in room.rooms[current_room] and move[1] in room.rooms[current_room]['item']:
                 # add the item to their inventory
-                usr.inventory += [move[1]]
+                usr.inventory += move[1]
                 # display a helpful message
-                print(f'You placed {[move [1]]}, in your inventory')
+                print(f'You placed {move[1]}, in your inventory')
                 # delete the item from the room
-                del room.rooms [currentRoom]['item']
+                del room.rooms[current_room]['item']
                 # otherwise, if the item isn't there to get
             else:
                 verification.not_there()
 
-        # else:
-        #     print('no')
-        #     print(f'{name}, {move[1]} HAS NOT been added to your inventory')
+        counter += 1
+        print(counter)
         # check = f'You picked up, {verify}, do you want to add this to your inventory?\nY or N\n>'.upper()
         # if check == 'Y':
         #     inventory += [move[1]]
@@ -152,11 +111,12 @@ def main():
         #         else:
         #             print(f'{name}, {verify} HAS NOT been added to your inventory')
 
-        if currentRoom == 'Car'.lower() and 'Car Keys'.lower() in usr.inventory and 'House Keys'.lower() in usr.inventory and 'Wallet'.lower() in usr.inventory\
-                and usr.sanity > 0:
+        if current_room == 'Car' and 'Car Keys' in usr.inventory and 'House Keys' in usr.inventory and 'Wallet' in \
+                usr.inventory and usr.sanity > 0:
             results.winner()
             break
-        elif usr.sanity < 0 and 'Car Keys' not in usr.inventory and 'House Keys' not in usr.inventory and 'Wallet' not in usr.inventory:
+        elif usr.sanity <= 0 and 'Car Keys' not in usr.inventory and 'House Keys' not in usr.inventory and 'Wallet' \
+                not in usr.inventory:
             print(f'{usr.name}, you were not strong enough, you lost your mind, and your keys, you cannot escape.')
             break
 
